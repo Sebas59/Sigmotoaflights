@@ -7,13 +7,13 @@ from contextlib import asynccontextmanager
 from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.future import select
 
-from data.models import *
-from utils.connection_db import *
-from data.schemas import *
+from utils.models import *
+from connections.connection_db import *
+from utils.schemas import *
 from operations.operations_db import *
 
-from utils.supabase_client import *
-import aiofiles
+
+
 
 @asynccontextmanager
 async def lifespan(app: APIRouter):
