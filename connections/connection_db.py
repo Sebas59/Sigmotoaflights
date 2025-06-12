@@ -8,7 +8,8 @@ from utils.models import *
 
 load_dotenv()
 
-CLEVER_DB = os.getenv("postgresql+asyncpg://parcialbase_user:6tAnrFcf0M0ui6EuUtIerLSMXbmZktBk@dpg-d15dbhbuibrs73bruorg-a.oregon-postgres.render.com/parcialbase")
+CLEVER_DB = ("postgresql+asyncpg://parcialbase_user:6tAnrFcf0M0ui6EuUtIerLSMXbmZktBk@dpg-d15dbhbuibrs73bruorg-a.oregon-postgres.render.com/parcialbase")
+
 if not CLEVER_DB:
     raise ValueError("La variable de entorno DATABASE_URL no está configurada.")
 
@@ -23,5 +24,6 @@ async def get_session():
     async with async_session() as session:
         yield session
         
+
 
 
