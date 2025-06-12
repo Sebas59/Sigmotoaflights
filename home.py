@@ -113,7 +113,7 @@ async def create_user(
 ):
     try:
         nuevo_user = await crear_user_db(user_data,session)
-        return RedirectResponse(url="/User", status_code=status.HTTP_303_SEE_OTHER)
+        return RedirectResponse(url="/Users", status_code=status.HTTP_303_SEE_OTHER)
     except HTTPException as e:
          return templades.TemplateResponse(
             "user_create.html",
