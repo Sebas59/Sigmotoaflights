@@ -71,7 +71,7 @@
         <tbody>
             {% for usuario in users  | sort(attribute='id') %}
             <tr>
-                <th scope="row">{{ vehiculo.id }}</th>
+                <th scope="row">{{ usuario.id }}</th>
                 <td>{{ usuario.nombre }}</td>
                 <td>{{ usuario.email }}</td>
                 <td>{{ usuario.have_mascota }}</td>
@@ -95,7 +95,7 @@
 </div>
 {% else %}
     <div class="alert alert-warning" role="alert">
-        No hay vehículos registrados que coincidan con los filtros aplicados.
+        No hay usuarios registrados que coincidan con los filtros aplicados.
     </div>
 {% endif %}
 <a href="/" class="btn btn-primary custom-hover-effect mt-3">
