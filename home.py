@@ -44,21 +44,21 @@ async def usuario_list_html(
     current_user_id = int(user_id) if user_id and user_id.isdigit() else None
 
     try:
-        users = await obtener_user_db(
+        usuarios = await obtener_user_db(
             session=session,
             nombre=current_nombre,
             email=current_email,
             user_id=current_user_id
         )
         error_message = None
-        if not users and (current_nombre or current_email or current_user_id):
+        if not usuarios and (current_nombre or current_email or current_user_id):
             error_message = "No se encontraron usuarios con los criterios de búsqueda"
 
         return templades.TemplateResponse(
             "User.html",
             {
                 "request": request,
-                "usuarios": users,
+                "usuarios": usuarios,
                 "have_mascota" : have_mascota,
                 "current_nombre": current_nombre,
                 "current_email": current_email,
