@@ -33,3 +33,26 @@ def user_create_form(
         email=email,
         have_mascota=have_mascota,
     )
+
+
+async def obtener_user_db(
+        session: AsyncSession,
+        nombre: Optional[str] = None,
+        email: Optional[str] = None,
+        user_id: Optional[int] = None
+) -> List[User]:
+    query = select(User)
+    condition = []
+    if nombre:
+        condition.append(User.nombre.ilike(f"%{nombre}"))
+    if email:
+        condition.append(User.email.ilike(f"%{email}"))
+    if user_id:
+        condition.append(User.id == user_id)
+
+    if condition:
+        query = query.where(and_(*condition))
+
+    result = await session.execute(query)
+    usuarios = result.scalars().all()
+    return usuarios
