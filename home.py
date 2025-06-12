@@ -39,7 +39,7 @@ async def usuario_create_html(request: Request, session: AsyncSession = Depends(
 
 @router.post("/usuario/crear", tags=["Usuario"])
 async def create_user(
-    user_data: UserCreate = Depends(user_create_form()),
+    user_data: UserCreate = Depends(user_create_form),
     session: AsyncSession = Depends(get_session)
 ):
     try:
