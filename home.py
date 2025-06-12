@@ -29,11 +29,80 @@ async def leer_home(request: Request):
     return templades.TemplateResponse("home.html", {"request": request})
 
 
+@router.get("/Users", tags=["Usuario"])
+async def usuario_list_html(
+        request: Request,
+        session: AsyncSession = Depends(get_session),
+        nombre: Optional[str] = Query(None, description="Filtrar por nombre del usuario(opcional)"),
+        email: Optional[str] = Query(None, description="Filtrar por email del usuario(opcional)"),
+        user_id: Optional[int] = Query(None, description="Filtrar por ID del usuario(opcional)"),
+        have_mascota: Optional[bool] = Query(None, description="Filtrar por ID del vehiculo(opcional)")
+):
+    current_nombre = nombre if nombre else None
+    current_email = email if email else None
+
+    current_user_id = int(user_id) if user_id and user_id.isdigit() else None
+
+    try:
+        users = await obtener_user_db(
+            session=session,
+            nombre=current_nombre,
+            email=current_email,
+            user_id=current_user_id
+        )
+        error_message = None
+        if not users and (current_nombre or current_email or current_user_id):
+            error_message = "No se encontraron vehículos con los criterios de búsqueda"
+
+        return templades.TemplateResponse(
+            "vehiculos.html",
+            {
+                "request": request,
+                "usuarios": users,
+                "have_mascota" : have_mascota,
+                "current_nombre": current_nombre,
+                "current_email": current_email,
+                "id_buscado": current_user_id,
+                "error_mensage": error_message
+            }
+        )
+    except HTTPException as e:
+        return templades.TemplateResponse(
+            "Users.html",
+            {
+                "request": request,
+                "usuarios": [],
+                "have_mascota" : have_mascota,
+                "current_nombre": current_nombre,
+                "current_email": current_email,
+                "id_buscado": current_user_id,
+                "error_mensage": e.detail
+            },
+            status_code=e.status_code
+        )
+    except Exception as e:
+        return templades.TemplateResponse(
+            "Users.html",
+            {
+                "request": request,
+                "usuarios": [],
+                "have_mascota" : have_mascota,
+                "current_nombre": current_nombre,
+                "current_email": current_email,
+                "id_buscado": current_user_id,
+                "error_mensage": f"Error inesperado: {e}"
+            },
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+
+
 @router.get("/usuario/crear", tags=["Usuario"])
 async def usuario_create_html(request: Request, session: AsyncSession = Depends(get_session)):
     return templades.TemplateResponse("user_create.html", {
         "request": request,
-        "title": "Crear Vehículo"
+        "title": "Crear usuario"
     })
 
 
