@@ -55,7 +55,7 @@ async def usuario_list_html(
             error_message = "No se encontraron usuarios con los criterios de búsqueda"
 
         return templades.TemplateResponse(
-            "Users.html",
+            "User.html",
             {
                 "request": request,
                 "usuarios": users,
@@ -68,7 +68,7 @@ async def usuario_list_html(
         )
     except HTTPException as e:
         return templades.TemplateResponse(
-            "Users.html",
+            "User.html",
             {
                 "request": request,
                 "usuarios": [],
@@ -82,7 +82,7 @@ async def usuario_list_html(
         )
     except Exception as e:
         return templades.TemplateResponse(
-            "Users.html",
+            "User.html",
             {
                 "request": request,
                 "usuarios": [],
