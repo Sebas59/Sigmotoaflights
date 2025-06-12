@@ -52,10 +52,10 @@ async def usuario_list_html(
         )
         error_message = None
         if not users and (current_nombre or current_email or current_user_id):
-            error_message = "No se encontraron vehículos con los criterios de búsqueda"
+            error_message = "No se encontraron usuarios con los criterios de búsqueda"
 
         return templades.TemplateResponse(
-            "vehiculos.html",
+            "Users.html",
             {
                 "request": request,
                 "usuarios": users,
