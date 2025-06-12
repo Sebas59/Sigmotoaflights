@@ -9,8 +9,8 @@ from utils.schemas import *
 from fastapi import Form,File
 
 
-async def crear_user_db(user_create, session:AsyncSession)->User:
-    nuevo_user = User(**user_create.dict())
+async def crear_usero_db(usuario:UserCreate, session:AsyncSession)->User:
+    nuevo_user = User(nombre=usuario.nombre, email=usuario.email, have_mascota=usuario.have_mascota)
     session.add(nuevo_user)
     try:
         await session.commit()
@@ -18,7 +18,7 @@ async def crear_user_db(user_create, session:AsyncSession)->User:
         return nuevo_user
     except IntegrityError:
         await session.rollback()
-        raise HTTPException(status_code=404, detail="Error al crear el Usuario")
+        raise HTTPException(status_code=404, detail="Error al crear el Usuario ")
 
 
 def user_create_form(
