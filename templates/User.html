@@ -1,0 +1,104 @@
+{% extends 'base.html' %} 
+
+{% block title %}Listado de Vehículos{% endblock %} 
+
+{% block content %} 
+
+<div class="jumbotron text-center bg-light p-4 rounded shadow-sm">
+    <div class="d-flex justify-content-between align-items-center mb-4"> 
+        <h1 class="mb-0">Listado de Usuarios</h1>
+        <a href="/vehiculos/historial_eliminados" class="btn btn-secondary custom-hover-effect">
+        <i class="bi bi-archive-fill me-2"></i> Ver Historial Eliminados
+    </a>
+    </div>
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-header btn-primary">
+        <h5 class="mb-0">
+            <button class="btn btn-link text-white text-decoration-none w-100 text-start d-flex justify-content-between align-items-center"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseFilters"
+                    aria-expanded="{% if current_nombre or current_email %}true{% else %}false{% endif %}" {
+                    aria-controls="collapseFilters">
+                <i class="bi bi-funnel-fill me-2"></i> Filtros de Usuarios
+                <i class="bi {% if current_marca or current_modelo %}bi-chevron-up{% else %}bi-chevron-down{% endif %} collapse-icon"></i>
+            </button>
+        </h5>
+    </div>
+
+    <div id="collapseFilters" class="collapse {% if current_marca or current_modelo %}show{% endif %}">
+        <div class="card-body">
+            <form action="/Users" method="get" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej : Juan" value="{{ current_nombre if current_nombre is not none else '' }}">
+                </div>
+                <div class="col-md-4">
+                    <label for="email" class="form-label">Correo:</label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Ej: Ejempl@exmaple.com" value="{{ current_email if current_email is not none else '' }}">
+                </div>
+                <div class="col-md-4">
+                    <label for="user_id" class="form-label">ID del Usuario:</label>
+                    <input type="text" class="form-control" id="user_id" name="user_id" placeholder="Ej: 1" value="{{ id_buscado if id_buscado is not none else '' }}">
+                </div>
+
+                <div class="col-12 d-flex align-items-end">
+                    <button type="submit" class="btn btn-success custom-hover-effect me-2">
+                        <i class="bi bi-funnel-fill me-2"></i> Aplicar Filtros
+                    </button>
+                    <a href="/Users" class="btn btn-secondary custom-hover-effect me-2">
+                    <i class="bi bi-x-circle-fill me-2"></i> Limpiar Filtros
+                </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% if users %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered align-middle table-sm">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Correo</th>
+                <th scope="col">Tiene mascota</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in users  | sort(attribute='id') %}
+            <tr>
+                <th scope="row">{{ vehiculo.id }}</th>
+                <td>{{ usuario.nombre }}</td>
+                <td>{{ usuario.email }}</td>
+                <td>{{ usuario.have_mascota }}</td>
+                <td>
+                    <div class="d-flex justify-content-center align-items-center"> 
+                        <a href="/vehiculos/edit/{{ vehiculo.id }}" class="btn btn-info btn-sm custom-hover-effect me-2">
+                            <i class="bi bi-pencil-square me-1"></i> Editar
+                        </a>
+                        <form action="/vehiculos/eliminar/{{ vehiculo.id }}" method="post" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este vehículo?');"
+                              class="d-inline-block p-0 m-0 border-0 bg-transparent">
+                            <button type="submit" class="btn btn-danger btn-sm custom-hover-effect">
+                                <i class="bi bi-trash-fill me-1"></i> Eliminar
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+    <div class="alert alert-warning" role="alert">
+        No hay vehículos registrados que coincidan con los filtros aplicados.
+    </div>
+{% endif %}
+<a href="/" class="btn btn-primary custom-hover-effect mt-3">
+    <i class="bi bi-house-door-fill me-2"></i> Volver a Inicio
+</a>
+{% endblock %}
